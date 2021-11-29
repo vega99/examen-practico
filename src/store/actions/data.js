@@ -70,6 +70,34 @@ export const addAnswer = (data) => {
   }
 }
 
+export const putAnswer = (data) => {
+  return async dispatch => {
+    try {
+      dispatch({type: SET_LOADING, isLoading: true});
+      const result = await fetch(`${API}/answers/api/answers/pId/${data.id}`, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify(data)
+      });
+      const resData = await result.json()       
+      
+      if(!result.ok){
+        dispatch({type: SET_LOADING, isLoading: false});
+        throw new Error('Algo salió mal, Inténtalo más tarde');
+      }      
+      if(resData.status !== "success"){
+        dispatch({type: SET_LOADING, isLoading: false})
+        throw new Error("Algo Salió mal, Intentalo más tarde");
+      }
+      dispatch(fetchData())
+      dispatch({type: SET_LOADING, isLoading: false})
+    } catch (error) {
+      dispatch({type: SET_LOADING, isLoading: false})
+      throw error;
+    }
+  }
+}
+
 export const addQuestion = (data) => {
   return async dispatch => {
     try {

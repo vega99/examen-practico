@@ -11,7 +11,6 @@ import AnswerQuestionForm from "./forms/AnswerQuestionForm";
 
 const Question = ({ question }) => {
   const [open, setOpen] = useState(false)
-  const history = useHistory()
   const user = useSelector(state => state.auth.userDetails)
   const isAuth = useSelector(state => state.auth.isAuth)
   const mine = isMine(user?.user_key, question?.id_user);  
@@ -39,9 +38,9 @@ const Question = ({ question }) => {
           </p>
         </div>
         <div className="self-end">
-          {(!question?.answer_id && !mine) && (
+          {(!question?.answer_id) && (
             <Button onClick={() => setOpen(true)} variant="outlined" color="success" disabled={isAuth ? false : true}>
-              Responder
+              {mine ? 'Responder mi propia pregunta' : 'Responder'}
             </Button>
           )}
         </div>

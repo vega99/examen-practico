@@ -9,9 +9,10 @@ import {
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { addAnswer } from "../../store/actions/data";
+import { addAnswer, putAnswer } from "../../store/actions/data";
 
-const AnswerQuestionForm = ({ qId, userId, open, onClose }) => {
+
+const AnswerQuestionForm = ({ qId, userId, open, onClose, answerId }) => {
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -22,23 +23,37 @@ const AnswerQuestionForm = ({ qId, userId, open, onClose }) => {
   } = useForm({});
 
   const isLoading = useSelector((state) => state.allData.isLoading);
+  const selectedAnswer = useSelector(state => state.allData.answers.find(an => an.id === answerId))
 
   const closeModal = () => {
     reset();
     onClose();
-  };
+  };  
 
   useEffect(() => {
     setValue("pUser", userId);
     setValue("pQuestion", qId);
-  }, [qId, userId]);
+    if (answerId) {
+      setValue("id", answerId);
+      setValue("pAnswer", selectedAnswer.answer);
+    }
+  }, [qId, userId, answerId, open]);
 
-  const onSubmit = async (data) => {
-    try {
-      await dispatch(addAnswer(data));
-      closeModal();
-    } catch (error) {
-      console.log(error);
+  const onSubmit = async (data) => {    
+    if (answerId) {
+      try {
+        await dispatch(putAnswer(data));
+        closeModal();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await dispatch(addAnswer(data));
+        closeModal();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return (
@@ -51,7 +66,7 @@ const AnswerQuestionForm = ({ qId, userId, open, onClose }) => {
         onClose={closeModal}
         keepMounted={false}
       >
-        <DialogTitle>Agregar Comentario</DialogTitle>
+        <DialogTitle>{answerId ? 'Editar respuesta' : 'Agregar respuesta'}</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
