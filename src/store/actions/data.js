@@ -1,7 +1,7 @@
 export const SET_DATA = 'SET_DATA';
 export const SET_LOADING = "SET_LOADING";
 
-const API = 'http://localhost/exmen_tecnico/questions_services/index.php';
+const API = 'http://localhost/examen_tecnico/questions_services/index.php';
 
 const getConfig = {
   method: 'GET',

@@ -3,7 +3,7 @@ import { SET_LOADING } from "./data";
 export const LOG_OUT = "LOG_OUT";
 export const LOG_IN = "LOG_IN";
 
-const API = "http://localhost/exmen_tecnico/questions_services/index.php";
+const API = "http://localhost/examen_tecnico/questions_services/index.php";
 
 export const login = (data) => {
   return async (dispatch) => {
