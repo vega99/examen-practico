@@ -5,13 +5,17 @@ import {
   DialogTitle,
   Button,
   TextField,
+  Collapse,
+  Alert
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { addQuestion } from "../../store/actions/data";
 
 const QuestionForm = ({ open, onClose, userId }) => {
+  const [openAlert, setOpenAlert] = useState(false)
+  const [message, setMessage] = useState('')
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.allData.isLoading);
 
@@ -28,6 +32,17 @@ const QuestionForm = ({ open, onClose, userId }) => {
     onClose();
   };
 
+  const closeAlert = () => {
+    setMessage('')
+    setOpenAlert(false)
+  }
+
+  const displayAlert = msg => {
+    setMessage(msg)
+    setTimeout(()=> {
+      closeAlert()
+    }, 4000)
+  }
   const onSubmit = async (data) => {
     try {
       await dispatch(addQuestion(data));

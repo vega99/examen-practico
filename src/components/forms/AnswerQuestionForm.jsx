@@ -1,18 +1,23 @@
 import {
   Button,
+  Collapse,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   TextField,
+  Alert
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { addAnswer, putAnswer } from "../../store/actions/data";
 
 
+
 const AnswerQuestionForm = ({ qId, userId, open, onClose, answerId }) => {
+  const [openAlert, setOpenAlert] = useState(false)
+  const [message, setMessage] = useState('')
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -39,20 +44,34 @@ const AnswerQuestionForm = ({ qId, userId, open, onClose, answerId }) => {
     }
   }, [qId, userId, answerId, open]);
 
+  const closeAlert = () => {
+    setOpenAlert(false)
+    setMessage('')
+  }
+
+
+  const openMessage = (msg) => {
+    setMessage(msg)
+    setOpenAlert(true)
+    setTimeout(() => {
+      closeAlert()
+    }, 4000);
+  }
+
   const onSubmit = async (data) => {    
     if (answerId) {
       try {
         await dispatch(putAnswer(data));
         closeModal();
       } catch (error) {
-        console.log(error);
+        openMessage(error.message)
       }
     } else {
       try {
         await dispatch(addAnswer(data));
         closeModal();
       } catch (error) {
-        console.log(error);
+        openMessage(error.message)        
       }
     }
   };
@@ -69,6 +88,9 @@ const AnswerQuestionForm = ({ qId, userId, open, onClose, answerId }) => {
         <DialogTitle>{answerId ? 'Editar respuesta' : 'Agregar respuesta'}</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
+            <Collapse in={openAlert}>
+              <Alert severity="error" onClose={closeAlert}>{message}</Alert>
+            </Collapse>
             <TextField
               label="Escribe tu respuesta"
               multiline
