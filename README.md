@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+ ##PASOS PARA INSTALAR EL BACKEND
+ 
+ 1- Descarga [AppServ](https://www.appserv.org/en/) e instalalo
+ 
+ 2- una vez descargado, te tienes que dirigir en tu pc  a esta ruta "C:\AppServ\www"  y ahí creas una carperta llamada "examen_tecnico"
+ 
+ 3- Dentro de la consola dirigite a esta ruta "C:\AppServ\www\examen_tecnico" y corre este comando "git clone https://github.com/vega99/examen-practico-api.git questions_services"
+ 
+ 
+ ##CONFIGURACIÓN BACKEND PARA BASE DE DATOS
+ 
+ 1- crea una base de datos con este código
+ 
+"create database questions_answers;
+use questions_answers;
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+create table users(
+  id int primary key auto_increment,
+  name varchar(100) not null,
+  lastname varchar(100) not null,
+  email varchar(100) not null,
+  password text not null,
+  created_at timestamp default current_timestamp,
+  updated_at timestamp default current_timestamp on update current_timestamp
+);
 
-## Available Scripts
+create table questions(
+  id int primary key auto_increment,
+  title varchar(255) not null,
+  description text not null,
+  user_id int not null,
+  foreign key (user_id) references users(id),
+  created_at timestamp default current_timestamp,
+  updated_at timestamp default current_timestamp on update current_timestamp  
+);
 
-In the project directory, you can run:
+create table answers (
+  id int primary key auto_increment,
+  answer text not null,
+  user_id int not null,
+  foreign key (user_id) references users(id),
+  question_id int not null,
+  foreign key (question_id) references questions(id),
+  created_at timestamp default current_timestamp,
+  updated_at timestamp default current_timestamp on update current_timestamp  
+);
 
-### `npm start`
+alter table questions add column answer_id int, add foreign key (answer_id) references answers(id); "
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2- ya cuando sea creada la base de datos, en vscode o cualquier otro editor de texto abre el proyecto de la api (backend) que se descargó previamente en la 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+carpeta "C:/AppServ/www/examen_tecnico/questions_services/application/config/database.php y en el campo "password" coloca la contraseña que creaste en la instalación de AppServe
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+###Listo, el backend ya esta montado
+ 
+ 
+ 
+ ##INSTALACIÓN DEL FRONT-END
 
-### `npm run build`
+1- Descarga [node js](https://nodejs.org/es/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2- Clona este proyecto en cualquier directorio de tu pc
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3- una vez clonado, abre ese directorio y corre este comando #npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4- Cuando se descarguen las dependencias corre "npm start" y el proyecto ya estará funcionando
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
