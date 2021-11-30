@@ -49,7 +49,7 @@ alter table questions add column answer_id int, add foreign key (answer_id) refe
 
 2- ya cuando sea creada la base de datos, en vscode o cualquier otro editor de texto abre el proyecto de la api (backend) que se descargó previamente en la 
 
-carpeta "application/config/database.php y en el campo "password" coloca la contraseña que creaste en la instalación de AppServe
+carpeta "C:/AppServ/www/examen_tecnico/questions_services/application/config/database.php y en el campo "password" coloca la contraseña que creaste en la instalación de AppServe
 
 
 ###Listo, el backend ya esta montado
